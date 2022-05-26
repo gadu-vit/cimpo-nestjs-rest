@@ -1,0 +1,122 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model adresses_customers {
+  id         Int         @id @default(autoincrement())
+  street     String      @db.VarChar(255)
+  zipCode    String      @db.Char(8)
+  number     String      @db.VarChar(7)
+  complement String?     @db.VarChar(127)
+  district   String      @db.VarChar(127)
+  city       String      @db.VarChar(127)
+  state      String      @db.VarChar(127)
+  createdAt  DateTime?   @default(now()) @db.Timestamp(0)
+  updatedAt  DateTime?   @default(now()) @db.Timestamp(0)
+  customers  customers[]
+}
+
+model coins {
+  id        Int         @id @default(autoincrement()) @db.UnsignedInt
+  name      String      @db.VarChar(63)
+  code      String      @db.Char(3)
+  createdAt DateTime    @default(now()) @db.Timestamp(0)
+  updatedAt DateTime    @default(now()) @db.Timestamp(0)
+  employees employees[]
+}
+
+model customers {
+  id                 Int                @id @default(autoincrement()) @db.UnsignedInt
+  name               String             @db.VarChar(31)
+  cpf                String             @db.Char(12)
+  addressId          Int
+  prodComprado       Int                @db.UnsignedInt
+  createdAt          DateTime           @default(now()) @db.Timestamp(0)
+  updatedAt          DateTime           @default(now()) @db.Timestamp(0)
+  adresses_customers adresses_customers @relation(fields: [addressId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "customers_ibfk_1")
+  products           products           @relation(fields: [prodComprado], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "customers_ibfk_2")
+  users              users[]
+
+  @@index([addressId], map: "addressId")
+  @@index([prodComprado], map: "prodComprado")
+}
+
+model employees {
+  id          Int       @id @default(autoincrement()) @db.UnsignedInt
+  name        String    @db.VarChar(255)
+  cpf         String    @db.Char(11)
+  phoneNumber String    @db.Char(13)
+  birthAt     DateTime  @db.Date
+  yearsOld    Int       @db.TinyInt
+  salary      Decimal   @db.Decimal(10, 2)
+  coinId      Int       @db.UnsignedInt
+  ruleId      Int       @db.UnsignedInt
+  startAt     DateTime  @db.Date
+  endAt       DateTime? @db.Date
+  createdAt   DateTime  @default(now()) @db.Timestamp(0)
+  updatedAt   DateTime  @default(now()) @db.Timestamp(0)
+  coins       coins     @relation(fields: [coinId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "employees_ibfk_1")
+  rules       rules     @relation(fields: [ruleId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "employees_ibfk_2")
+
+  @@index([coinId], map: "coinId")
+  @@index([ruleId], map: "ruleId")
+}
+
+model lines_products {
+  id        Int         @id @default(autoincrement()) @db.UnsignedInt
+  linename  String      @db.VarChar(127)
+  category  String      @db.VarChar(31)
+  billing   Decimal     @db.Decimal(7, 2)
+  status    String      @db.VarChar(11)
+  goal      Decimal?    @db.Decimal(7, 2)
+  products  products[]
+  providers providers[]
+}
+
+model products {
+  id             Int            @id @default(autoincrement()) @db.UnsignedInt
+  pname          String         @db.VarChar(127)
+  lineId         Int            @db.UnsignedInt
+  price          Decimal        @db.Decimal(5, 2)
+  status         String         @db.VarChar(31)
+  category       String         @db.VarChar(31)
+  lines_products lines_products @relation(fields: [lineId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "products_ibfk_1")
+  customers      customers[]
+
+  @@index([lineId], map: "lineId")
+}
+
+model providers {
+  id             Int            @id @default(autoincrement()) @db.UnsignedInt
+  name           String         @db.VarChar(256)
+  cnpj           String         @db.Char(14)
+  lineId         Int            @db.UnsignedInt
+  lines_products lines_products @relation(fields: [lineId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "providers_ibfk_1")
+
+  @@index([lineId], map: "lineId")
+}
+
+model rules {
+  id        Int         @id @default(autoincrement()) @db.UnsignedInt
+  name      String      @db.VarChar(127)
+  createdAt DateTime    @default(now()) @db.Timestamp(0)
+  updatedAt DateTime    @default(now()) @db.Timestamp(0)
+  employees employees[]
+}
+
+model users {
+  id         Int        @id @default(autoincrement())
+  customerId Int?       @db.UnsignedInt
+  email      String     @db.VarChar(45)
+  password   String?    @db.VarChar(255)
+  createdAt  DateTime?  @default(now()) @db.Timestamp(0)
+  updateAt   DateTime?  @default(now()) @db.Timestamp(0)
+  customers  customers? @relation(fields: [customerId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "users_ibfk_1")
+
+  @@index([customerId], map: "customerId")
+}
