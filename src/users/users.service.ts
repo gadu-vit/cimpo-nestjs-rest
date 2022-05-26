@@ -75,7 +75,11 @@ export class UsersService {
   }
 
   async remove(id: number) {
-    return `This action removes a #${id} user`;
+    return await this.database.users.delete({
+      where: {
+        id: this.getId(id),
+      },
+    });;
   }
 
   getId(id: number) {
