@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
 import { DataBaseModule } from 'src/database/database.module';
-import { DataBaseService } from 'src/database/database.service';
 import { JwtModule } from '@nestjs/jwt';
 
 @Module({
@@ -15,9 +14,10 @@ import { JwtModule } from '@nestjs/jwt';
         },
       }),
     }),
-    DataBaseModule],
+    DataBaseModule,
+  ],
   controllers: [UsersController],
   providers: [UsersService],
-  exports: [UsersService]
+  exports: [UsersService],
 })
 export class UsersModule {}

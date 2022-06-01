@@ -14,7 +14,8 @@ import { AddressCustomerService } from './addressCustomer.service';
         },
       }),
     }),
-    DataBaseModule],
+    DataBaseModule,
+  ],
   controllers: [AddressCustomerController],
   providers: [AddressCustomerService],
 })

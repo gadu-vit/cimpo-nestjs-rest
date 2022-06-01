@@ -14,7 +14,8 @@ import { LinesService } from './linesProducts.service';
         },
       }),
     }),
-    DataBaseModule],
+    DataBaseModule,
+  ],
   controllers: [LinesController],
   providers: [LinesService],
 })

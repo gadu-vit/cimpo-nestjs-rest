@@ -15,35 +15,35 @@ import { UpdateAddressCustomerDto } from './dto/update-addressCustomer.dto';
 
 @Controller('address_customer')
 export class AddressCustomerController {
-  constructor(private AddressCustomerService: AddressCustomerService) {}
+  constructor(private addressCustomerService: AddressCustomerService) {}
 
   @UseGuards(AuthGuard)
   @Post()
   create(@Body() address: CreateAddressCustomerDto) {
-    return this.AddressCustomerService.create(address);
+    return this.addressCustomerService.create(address);
   }
 
   @UseGuards(AuthGuard)
   @Get()
   read() {
-    return this.AddressCustomerService.list();
+    return this.addressCustomerService.list();
   }
 
   @UseGuards(AuthGuard)
   @Get(':id')
   show(@Param('id') id) {
-    return this.AddressCustomerService.get(id);
+    return this.addressCustomerService.get(id);
   }
 
   @UseGuards(AuthGuard)
   @Patch(':id')
   Update(@Param('id') id, @Body() address: UpdateAddressCustomerDto) {
-    return this.AddressCustomerService.update(id, address);
+    return this.addressCustomerService.update(id, address);
   }
 
   @UseGuards(AuthGuard)
   @Delete(':id')
   remove(@Param('id') id) {
-    return this.AddressCustomerService.delete(id);
+    return this.addressCustomerService.delete(id);
   }
 }

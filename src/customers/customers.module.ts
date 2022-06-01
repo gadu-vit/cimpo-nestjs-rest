@@ -14,7 +14,8 @@ import { JwtModule } from '@nestjs/jwt';
         },
       }),
     }),
-    DataBaseModule],
+    DataBaseModule,
+  ],
   controllers: [CustomersController],
   providers: [CustomersService],
 })

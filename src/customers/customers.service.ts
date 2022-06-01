@@ -32,10 +32,10 @@ export class CustomersService {
         },
         products: {
           connect: {
-            id: Number(data.prodComprado)
+            id: Number(data.prodComprado),
           },
-        }
-      }
+        },
+      },
     });
   }
 
