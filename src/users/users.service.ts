@@ -51,6 +51,9 @@ export class UsersService {
           },
         },
       },
+      include: {
+        customers: true,
+      }
     });
   }
 
